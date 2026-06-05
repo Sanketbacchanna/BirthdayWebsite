@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday MonAkka!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Outfit:wght@300;400;500;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Background Animated Gradient & Orbs -->
+    <div class="bg-animation">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+    <!-- Countdown Music -->
+    <audio id="countdown-music" preload="auto">
+        <!-- Dramatic cinematic riser/tick for countdown -->
+        <source src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3" type="audio/mpeg">
+        <source src="https://assets.mixkit.co/active_storage/sfx/2003/2003-preview.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Background Music -->
+    <audio id="bg-music" loop preload="auto">
+        <!-- Try local file first -->
+        <source src="assets/happy-birthday.mp3" type="audio/mpeg">
+        <source src="assets/bg-music.mp3" type="audio/mpeg">
+
+        <!-- Online fallbacks -->
+        <source src="https://assets.mixkit.co/active_storage/sfx/2019/2019-preview.mp3" type="audio/mpeg">
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+        <source src="https://upload.wikimedia.org/wikipedia/commons/e/ea/Happy_Birthday_to_You_-_musical_box.ogg"
+            type="audio/ogg">
+    </audio>
+
+    <div id="container">
+        <!-- Intro Screen -->
+        <div id="intro-screen" class="screen active">
+            <div id="countdown-container"
+                style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh;">
+                <h1 class="glow-text" id="countdown-text"
+                    style="font-size: 8rem; transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);">3</h1>
+                <p class="bounce-text" id="intro-message"
+                    style="opacity: 0; font-size: 2.5rem; color: #fbbf24; font-family: 'Great Vibes', cursive; letter-spacing: 2px; margin-top: 0; text-shadow: 0 0 15px rgba(251, 191, 36, 0.5); transition: opacity 0.5s ease;">
+                    ✨ A Special Surprise Awaits For Special Person✨</p>
+            </div>
+        </div>
+
+        <!-- Gift Screen -->
+        <div id="gift-screen" class="screen hidden">
+            <!-- <h1 class="glow-text">A Special Surprise </h1> -->
+            <p class="subtitle"></p>
+            <div class="gift-box" onclick="openGift()">
+                <div class="glow-ring"></div>
+                <img src="assets/mystery_gift_box_1780481003307.png" alt="Mystery Gift Box">
+            </div>
+            <div class="bounce-text">Tap the gift!</div>
+        </div>
+
+        <!-- Surprise Cards Screen -->
+        <div id="surprise-cards-screen" class="screen hidden" style="height: 100vh;">
+            <div class="surprise-card card active" id="sc-1" onclick="nextCard(1)">
+                <h2 class="script-font" style="font-size: 4rem; line-height: 1.2;">You thought this was just a normal
+                    link? <span class="emoji">😉</span></h2>
+                <p class="bounce-text" style="margin-top: 30px;">Tap to continue...</p>
+            </div>
+            <div class="surprise-card card hidden" id="sc-2" onclick="nextCard(2)">
+                <h2 class="script-font" style="font-size: 4rem; line-height: 1.2;">Nope, I made this just for you,
+                    MonAkka! <span class="emoji">❤️</span></h2>
+                <p class="bounce-text" style="margin-top: 30px;">Tap to continue...</p>
+            </div>
+            <div class="surprise-card card hidden" id="sc-3" onclick="nextCard(3)">
+                <h2 class="script-font" style="font-size: 4.5rem; line-height: 1.2;">Get ready for your real gift...
+                    <span class="emoji">🎁</span>
+                </h2>
+                <p class="bounce-text" style="margin-top: 30px;">Tap to reveal!</p>
+            </div>
+            <div class="surprise-card card hidden final-gift" id="sc-4">
+                <h2 class="script-font glow-text" style="font-size: 4rem;">
+                    Your Real Gift Is...
+                </h2>
+
+                <!-- Scratch Card Area -->
+                <div id="scratch-container"
+                    style="position: relative; width: 300px; height: 180px; margin: 30px auto; border-radius: 15px; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.5); cursor: crosshair;">
+                    <!-- Reveal Content (Underneath) -->
+                    <div id="scratch-reveal"
+                        style="position: absolute; width: 100%; height: 100%; background: linear-gradient(135deg, #fbcfe8, #f472b6); display: flex; align-items: center; justify-content: center; flex-direction: column;">
+                        <h1 class="gift-reveal"
+                            style="font-size: 2.2rem; margin: 0; color: #fff !important; text-shadow: 0 2px 5px rgba(0,0,0,0.2); -webkit-text-fill-color: #fff !important;">
+                            Unlimited Gulab Jamun Treat!<span class="emoji">🍮✨❤️</span>
+                        </h1>
+                    </div>
+                    <!-- Scratch Canvas (Top Layer) -->
+                    <canvas id="scratch-canvas"
+                        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; touch-action: none;"></canvas>
+                </div>
+
+                <p class="text-light" style="font-size: 1.3rem; line-height: 1.8;">
+                    Because you deserve a day filled with happiness, laughter,
+                    delicious food, and everything you love. <br>
+                    <br>
+                    Thank you for being the most amazing sister. <br>
+                    Today is all about YOU! <span class="emoji">✨</span>
+                </p>
+
+                <p class="bounce-text hidden" id="enter-party-btn"
+                    style="margin-top: 30px; font-size: 1.4rem; cursor: pointer;" onclick="showCelebration()">
+                    Tap to enter your birthday celebration! <span class="emoji">🎉🎂🎁</span>
+                </p>
+            </div>
+        </div>
+
+        <!-- Celebration Screen -->
+        <div id="celebration-screen" class="screen hidden">
+            <!-- Balloons Container -->
+            <div id="balloons-container"></div>
+
+            <canvas id="confetti"></canvas>
+
+            <div class="card" data-tilt data-tilt-max="5" data-tilt-speed="400" data-tilt-glare="true"
+                data-tilt-max-glare="0.2">
+                <div class="card-inner">
+                    <h2 class="script-font">Happy Birthday MonAkka! <span class="emoji">🎉</span></h2>
+
+                    <div class="portrait-container">
+                        <div class="portrait-ring"></div>
+                        <img src="assets/MM.jpg" alt="MonAkka" class="portrait-img">
+                    </div>
+
+                    <p class="message">Wishing you a day as incredibly wonderful as you are! May your year ahead be
+                        filled with boundless joy, unforgettable memories, and all your beautiful dreams coming true.
+                    </p>
+
+                    <div class="button-grid">
+                        <button class="memory-btn" onclick="toggleMemories()"
+                            style="width: 100%; padding: 12px 10px; font-size: 1rem;">
+                            <span class="sparkle">✨</span> Memories
+                        </button>
+
+                        <button class="memory-btn reasons-btn" onclick="toggleReasons()"
+                            style="width: 100%; padding: 12px 10px; font-size: 1rem; background: linear-gradient(135deg, #fbbf24, #f59e0b);">
+                            <span class="sparkle">💖</span> 5 Reasons
+                        </button>
+
+                        <button class="memory-btn cake-btn" onclick="toggleCake()"
+                            style="width: 100%; padding: 12px 10px; font-size: 1rem; background: linear-gradient(135deg, #ec4899, #be185d);">
+                            <span class="sparkle">🎂</span> Virtual Cake
+                        </button>
+
+                        <button class="memory-btn letter-btn" onclick="openLetter()"
+                            style="width: 100%; padding: 12px 10px; font-size: 1rem; background: linear-gradient(135deg, #6366f1, #4338ca);">
+                            <span class="sparkle">💌</span> My Letter
+                        </button>
+                    </div>
+
+                    <button class="memory-btn final-btn" onclick="finalSurprise()"
+                        style="margin-top: 15px; display: block; width: 100%; padding: 15px 20px; font-size: 1.2rem; background: linear-gradient(135deg, #059669, #047857);">
+                        <span class="sparkle">🎁</span>
+                        One Last Surprise
+                        <span class="sparkle">🎁</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reasons Modal -->
+        <div id="reasons-modal" class="modal hidden">
+            <span class="close-btn" onclick="toggleReasons()">&times;</span>
+            <div class="modal-content"
+                style="max-width: 800px; padding: 30px; height: 80vh; display: flex; flex-direction: column;">
+                <h2 class="script-font text-center mb-1" style="font-size: 3.5rem;">Why I Love You</h2>
+                <div class="reasons-container" id="reasons-container" style="flex: 1;">
+                </div>
+            </div>
+        </div>
+
+        <!-- Memory Gallery Modal -->
+        <div id="memory-modal" class="modal hidden">
+            <span class="close-btn" onclick="toggleMemories()">&times;</span>
+            <div class="modal-content">
+                <h2 class="script-font text-center mb-1">Precious Memories</h2>
+                <p class="text-center text-light mb-4">Tap on a photo to take a closer look</p>
+
+                <div class="polaroid-gallery">
+                    <!-- Videos -->
+                    <div class="polaroid"><video src="assets/monika__m19_b9160d2dcd7d4d47a51204a1be5db391.mp4" autoplay
+                            loop muted playsinline></video></div>
+                    <div class="polaroid"><video src="assets/Snapchat-527843204.mp4" autoplay loop muted
+                            playsinline></video></div>
+                    <div class="polaroid"><video src="assets/Snapchat-1835184224.mp4" autoplay loop muted
+                            playsinline></video></div>
+                    <!-- Images -->
+                    <div class="polaroid"><img src="assets/MM.jpg" alt="Memory"></div>
+                    <div class="polaroid"><img src="assets/IMG-20250528-WA0021.jpg" alt="Memory"></div>
+                    <div class="polaroid"><img src="assets/IMG-20250601-WA0010.png" alt="Memory"></div>
+                    <div class="polaroid"><img src="assets/IMG-20250601-WA0021.jpg" alt="Memory"></div>
+                    <div class="polaroid"><img src="assets/IMG-20250614-WA0033.jpg" alt="Memory"></div>
+                    <div class="polaroid"><img src="assets/IMG-20260427-WA0022.jpg" alt="Memory"></div>
+                    <div class="polaroid"><img src="assets/IMG-20260427-WA0023.jpg" alt="Memory"></div>
+                    <div class="polaroid"><img src="assets/IMG-20260427-WA0030.jpg" alt="Memory"></div>
+                    <div class="polaroid"><img src="assets/IMG-20260427-WA0032.jpg" alt="Memory"></div>
+                    <div class="polaroid"><img src="assets/Screenshot_2024-06-10-00-04-56-015-edit_com.whatsapp.jpg"
+                            alt="Memory"></div>
+                    <div class="polaroid"><img src="assets/Snapchat-1628616165.jpg" alt="Memory"></div>
+                    <div class="polaroid"><img src="assets/Snapchat-1988507172.jpg" alt="Memory"></div>
+                    <div class="polaroid"><img src="assets/Snapchat-725268181.jpg" alt="Memory"></div>
+                    <div class="polaroid"><img src="assets/Snapchat-780156977.jpg" alt="Memory"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cake Modal -->
+        <div id="cake-modal" class="modal hidden">
+            <span class="close-btn" onclick="toggleCake()">&times;</span>
+            <div class="modal-content cake-modal-content">
+                <h2 class="script-font text-center mb-1">Make a Wish! <span class="emoji">✨</span></h2>
+                <p class="text-center text-light mb-4" id="cake-instructions" style="font-size: 1.3rem;">Tap the candles
+                    to blow them out</p>
+
+                <div class="cake-container" onclick="interactCake()">
+                    <div class="cake">
+                        <div class="plate"></div>
+                        <div class="layer layer-bottom"></div>
+                        <div class="layer layer-middle"></div>
+                        <div class="layer layer-top"></div>
+                        <div class="icing"></div>
+                        <div class="drip drip1"></div>
+                        <div class="drip drip2"></div>
+                        <div class="drip drip3"></div>
+                        <div class="drip drip4"></div>
+                        <div class="candle candle1">
+                            <div class="flame"></div>
+                        </div>
+                        <div class="candle candle2">
+                            <div class="flame"></div>
+                        </div>
+                        <div class="candle candle3">
+                            <div class="flame"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Letter Modal -->
+        <div id="letter-modal" class="modal hidden">
+            <span class="close-btn" onclick="openLetter()">&times;</span>
+            <div class="modal-content"
+                style="display: flex; justify-content: center; align-items: center; padding: 20px;">
+                <div class="letter-paper">
+                    <p class="script-font letter-text">
+                        Dear MonAkka,<br><br>
+                        Thank you for always being there for me... You are my biggest supporter and my best
+                        friend.<br><br>
+                        Wishing you the most wonderful day. May all your dreams come true!<br><br>
+                        Happy Birthday! ❤️
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Final Surprise Modal -->
+        <div id="final-modal" class="modal hidden">
+            <span class="close-btn" onclick="finalSurprise()">&times;</span>
+            <div class="modal-content text-center final-modal-content">
+                <h2 class="script-font glow-text final-title">
+                    ✨ Congratulations! ✨
+                </h2>
+                <h3 class="final-subtitle">
+                    You have officially won:
+                </h3>
+                <div
+                    style="display: flex; flex-direction: column; gap: 20px; font-size: 1.5rem; color: #fbcfe8; text-align: left; background: rgba(0,0,0,0.4); padding: 30px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.1);">
+                    <!-- <div
+                        style="display: flex; align-items: center; gap: 20px; animation: popInReason 0.5s forwards 0.2s; opacity: 0;">
+                        <span class="emoji" style="font-size: 2.5rem; flex-shrink: 0;">🛍️</span> Unlimited Shopping
+                        (Today)
+                    </div>
+                    <div
+                        style="display: flex; align-items: center; gap: 20px; animation: popInReason 0.5s forwards 0.8s; opacity: 0;">
+                        <span class="emoji" style="font-size: 2.5rem; flex-shrink: 0;">🍝</span> Special Dinner
+                    </div> -->
+                    <div
+                        style="display: flex; align-items: center; gap: 20px; animation: popInReason 0.5s forwards 1.4s; opacity: 0;">
+                        <span class="emoji" style="font-size: 2.5rem; flex-shrink: 0;">❤️</span> A Lifetime VIP Pass to
+                        My Heart
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
