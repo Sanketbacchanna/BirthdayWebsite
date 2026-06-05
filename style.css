@@ -399,6 +399,17 @@ canvas#confetti { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
     100% { transform: translateY(-120vh) rotate(-5deg); }
 }
 
+/* Button Grid */
+.button-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
+
+/* Modal Content Specifics */
+.cake-modal-content { display: flex; flex-direction: column; align-items: center; padding: 40px 20px; }
+.cake-modal-content h2 { font-size: 4rem; }
+
+.final-modal-content { padding: 40px; background: linear-gradient(135deg, rgba(30,27,75,0.95), rgba(59,7,100,0.95)); border: 2px solid var(--gold); border-radius: 20px; max-width: 600px; }
+.final-title { font-size: 4rem; color: #fbbf24; margin-bottom: 20px; }
+.final-subtitle { font-size: 1.8rem; color: #fff; margin-bottom: 30px; font-weight: 400; line-height: 1.5; }
+
 @media (max-width: 992px) {
     .glow-text { font-size: 3rem; }
     .card h2 { font-size: 3.8rem; }
@@ -436,7 +447,7 @@ canvas#confetti { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
     .portrait-container { width: 150px; height: 150px; margin-bottom: 25px; }
     .portrait-img { border-width: 4px; }
     .message { font-size: 1rem; margin-bottom: 25px; }
-    .memory-btn { padding: 12px 20px; font-size: 1rem; width: 100%; max-width: 280px; }
+    .memory-btn { padding: 12px 10px; font-size: 1rem; width: 100%; max-width: 100%; }
     
     .modal-content h2 { font-size: 2.5rem; margin-top: 20px; }
     .text-light { font-size: 0.95rem; }
@@ -452,17 +463,6 @@ canvas#confetti { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
     .final-title { font-size: 2.5rem !important; margin-bottom: 10px; }
     .final-subtitle { font-size: 1.2rem; margin-bottom: 20px; }
 }
-
-/* Button Grid */
-.button-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
-
-/* Modal Content Specifics */
-.cake-modal-content { display: flex; flex-direction: column; align-items: center; padding: 40px 20px; }
-.cake-modal-content h2 { font-size: 4rem; }
-
-.final-modal-content { padding: 40px; background: linear-gradient(135deg, rgba(30,27,75,0.95), rgba(59,7,100,0.95)); border: 2px solid var(--gold); border-radius: 20px; max-width: 600px; }
-.final-title { font-size: 4rem; color: #fbbf24; margin-bottom: 20px; }
-.final-subtitle { font-size: 1.8rem; color: #fff; margin-bottom: 30px; font-weight: 400; line-height: 1.5; }
 
 /* Virtual Cake */
 .cake-btn { box-shadow: 0 15px 30px rgba(236, 72, 153, 0.3); }
