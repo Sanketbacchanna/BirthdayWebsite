@@ -432,6 +432,19 @@ function interactCake() {
 function blowCandles() {
     if (candlesBlown) return;
 
+    // Pause background YouTube music and play Happy Birthday song
+    if (typeof ytPlayer !== 'undefined' && ytPlayer.pauseVideo) {
+        try {
+            ytPlayer.pauseVideo();
+        } catch(e) {}
+    }
+    const bgMusic = document.getElementById('bg-music');
+    if (bgMusic) {
+        bgMusic.volume = 0.8;
+        bgMusic.currentTime = 0; // Start from beginning
+        bgMusic.play().catch(e => console.log("Audio play prevented", e));
+    }
+
     const flames = document.querySelectorAll('.flame');
     flames.forEach(flame => {
         flame.classList.add('extinguished');
