@@ -69,13 +69,11 @@ function startCountdown() {
             introScreen.classList.remove('active');
             introScreen.classList.add('hidden');
             
-            // Switch music! Fade out countdown, fade in bg
+            // Switch music! Fade out countdown, wait for user to click gift to fade in bg
             const countdownMusic = document.getElementById('countdown-music');
             const bgMusic = document.getElementById('bg-music');
             
             countdownMusic.pause();
-            
-            playBackgroundMusic();
             
             setTimeout(() => {
                 giftScreen.classList.remove('hidden');
