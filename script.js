@@ -414,7 +414,20 @@ function toggleCake() {
     const modal = document.getElementById('cake-modal');
     if (modal.classList.contains('active')) {
         modal.classList.remove('active');
-        setTimeout(() => modal.classList.add('hidden'), 500);
+        setTimeout(() => {
+            modal.classList.add('hidden');
+            
+            // Resume YouTube background music and pause Happy Birthday song
+            const bgMusic = document.getElementById('bg-music');
+            if (bgMusic && !bgMusic.paused) {
+                bgMusic.pause();
+            }
+            if (typeof ytPlayer !== 'undefined' && ytPlayer.playVideo) {
+                try {
+                    if (ytPlayer.getPlayerState() !== 1) ytPlayer.playVideo();
+                } catch(e) {}
+            }
+        }, 500);
     } else {
         modal.classList.remove('hidden');
         setTimeout(() => modal.classList.add('active'), 10);
