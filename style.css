@@ -435,6 +435,9 @@ canvas#confetti { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
     .swiper-slide { width: 240px; height: 360px; border-width: 8px; border-bottom-width: 40px; }
     .swiper { padding-top: 20px; padding-bottom: 40px; }
     .surprise-card h2 { font-size: 3rem !important; }
+    
+    #countdown-text { font-size: 6rem !important; }
+    #intro-message { font-size: 2rem !important; }
 }
 
 @media (max-width: 480px) {
@@ -461,9 +464,33 @@ canvas#confetti { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
     .button-grid { grid-template-columns: 1fr; }
     .cake-modal-content h2 { font-size: 2.5rem !important; }
     .final-modal-content { padding: 25px 15px; }
-    .final-title { font-size: 2.5rem !important; margin-bottom: 10px; }
-    .final-subtitle { font-size: 1.2rem; margin-bottom: 20px; }
-    .surprise-card h2 { font-size: 2.2rem !important; padding: 0 10px; }
+    .final-title { font-size: 2.2rem !important; margin-bottom: 10px; }
+    .final-subtitle { font-size: 1.1rem; margin-bottom: 20px; }
+    .final-modal-content div[style*="flex-direction: column"] { font-size: 1.1rem !important; padding: 20px !important; }
+    
+    /* Fix Surprise Cards Overflow */
+    .surprise-card { max-height: 85vh; overflow-y: auto; padding: 20px 15px !important; width: 95% !important; }
+    .surprise-card::-webkit-scrollbar { display: none; }
+    .surprise-card h2 { font-size: 2.2rem !important; margin-bottom: 10px !important; line-height: 1.2 !important; padding: 0 !important; }
+    #scratch-container { max-width: 240px !important; height: 140px !important; margin: 15px auto !important; }
+    .surprise-card p.text-light { font-size: 0.9rem !important; line-height: 1.5 !important; margin-bottom: 10px !important; }
+    #enter-party-btn { margin-top: 15px !important; font-size: 1rem !important; }
+    
+    /* Intro Screen */
+    #countdown-text { font-size: 5rem !important; }
+    #intro-message { font-size: 1.6rem !important; }
+    
+    /* Reasons & Gallery Modals */
+    .reasons-container { grid-template-columns: 1fr; }
+    .flip-card-front { font-size: 2.2rem; }
+    .flip-card-back { font-size: 1rem; padding: 15px; }
+    .polaroid { width: 140px; padding: 8px 8px 30px 8px; }
+    .polaroid img, .polaroid video { height: 140px; }
+    .polaroid-gallery { gap: 15px; padding: 15px 5px; }
+    
+    /* Letter Modal */
+    .letter-paper { min-height: 300px; padding: 2.5rem 1rem 1rem 1rem; }
+    .letter-text { font-size: 1.5rem; line-height: 2.2rem; margin-left: 10px; }
 }
 
 /* Virtual Cake */
