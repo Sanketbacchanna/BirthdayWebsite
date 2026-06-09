@@ -1,4 +1,42 @@
 let audioStarted = false;
+let ytPlayer;
+
+function onYouTubeIframeAPIReady() {
+    ytPlayer = new YT.Player('youtube-player', {
+        height: '0',
+        width: '0',
+        videoId: 'z_wEAon7LRI',
+        playerVars: {
+            'autoplay': 0,
+            'controls': 0,
+            'loop': 1,
+            'playlist': 'z_wEAon7LRI'
+        },
+        events: {
+            'onReady': (event) => {
+                event.target.setVolume(50);
+            }
+        }
+    });
+}
+
+function playBackgroundMusic() {
+    if (typeof ytPlayer !== 'undefined' && ytPlayer.playVideo) {
+        try {
+            if (ytPlayer.getPlayerState() !== 1) {
+                ytPlayer.playVideo();
+            }
+        } catch(e) {
+            ytPlayer.playVideo();
+        }
+    } else {
+        const bgMusic = document.getElementById('bg-music');
+        if (bgMusic && bgMusic.paused) {
+            bgMusic.volume = 0.5;
+            bgMusic.play().catch(e => console.log("Audio autoplay prevented", e));
+        }
+    }
+}
 
 window.onload = () => {
     // Attempt to play dramatic countdown music automatically
@@ -37,11 +75,7 @@ function startCountdown() {
             
             countdownMusic.pause();
             
-            if (!audioStarted) {
-                bgMusic.volume = 0.5;
-                bgMusic.play().catch(e => console.log("Audio autoplay prevented", e));
-                audioStarted = true;
-            }
+            playBackgroundMusic();
             
             setTimeout(() => {
                 giftScreen.classList.remove('hidden');
@@ -57,11 +91,7 @@ function openGift() {
     const bgMusic = document.getElementById('bg-music');
 
     // Start audio
-    if (!audioStarted) {
-        bgMusic.volume = 0.5;
-        bgMusic.play().catch(e => console.log("Audio autoplay prevented"));
-        audioStarted = true;
-    }
+    playBackgroundMusic();
 
     // Gift animation - Shrink and spin away
     const giftBox = document.querySelector('.gift-box');

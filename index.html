@@ -37,6 +37,11 @@
             type="audio/ogg">
     </audio>
 
+    <!-- YouTube Background Music Player -->
+    <div style="position: absolute; width: 0; height: 0; overflow: hidden; pointer-events: none;">
+        <div id="youtube-player"></div>
+    </div>
+
     <div id="container">
         <!-- Intro Screen -->
         <div id="intro-screen" class="screen active">
@@ -296,6 +301,7 @@
     </div>
 
     <!-- Scripts -->
+    <script src="https://www.youtube.com/iframe_api"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
     <script src="script.js"></script>
