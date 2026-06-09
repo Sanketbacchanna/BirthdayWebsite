@@ -434,6 +434,7 @@ canvas#confetti { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
     .close-btn { top: 15px; right: 20px; font-size: 2.8rem; }
     .swiper-slide { width: 240px; height: 360px; border-width: 8px; border-bottom-width: 40px; }
     .swiper { padding-top: 20px; padding-bottom: 40px; }
+    .surprise-card h2 { font-size: 3rem !important; }
 }
 
 @media (max-width: 480px) {
@@ -462,6 +463,7 @@ canvas#confetti { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
     .final-modal-content { padding: 25px 15px; }
     .final-title { font-size: 2.5rem !important; margin-bottom: 10px; }
     .final-subtitle { font-size: 1.2rem; margin-bottom: 20px; }
+    .surprise-card h2 { font-size: 2.2rem !important; padding: 0 10px; }
 }
 
 /* Virtual Cake */

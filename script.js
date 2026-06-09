@@ -14,7 +14,8 @@ function onYouTubeIframeAPIReady() {
         },
         events: {
             'onReady': (event) => {
-                event.target.setVolume(50);
+                event.target.mute();
+                event.target.playVideo(); // Preload muted to avoid delay
             }
         }
     });
@@ -23,6 +24,9 @@ function onYouTubeIframeAPIReady() {
 function playBackgroundMusic() {
     if (typeof ytPlayer !== 'undefined' && ytPlayer.playVideo) {
         try {
+            ytPlayer.unMute();
+            ytPlayer.setVolume(100);
+            ytPlayer.seekTo(0);
             if (ytPlayer.getPlayerState() !== 1) {
                 ytPlayer.playVideo();
             }
