@@ -43,12 +43,32 @@ function playBackgroundMusic() {
 }
 
 window.onload = () => {
-    // Attempt to play dramatic countdown music automatically
+    // Attempt to preload dramatic countdown music automatically
     const countdownMusic = document.getElementById('countdown-music');
     countdownMusic.volume = 0.5;
-    countdownMusic.play().catch(e => console.log("Countdown audio prevented by browser", e));
+    countdownMusic.load();
     
-    startCountdown();
+    // Wait for user to click "Start Surprise" instead of auto-starting
+    const startBtn = document.getElementById('start-surprise-btn');
+    if(startBtn) {
+        startBtn.addEventListener('click', () => {
+            startBtn.style.display = 'none';
+            document.getElementById('countdown-text').style.display = 'block';
+            
+            // Now play the audio (user has interacted)
+            countdownMusic.play().catch(e => console.log("Countdown audio prevented by browser", e));
+            
+            startCountdown();
+            
+            // Hide personalize button once started
+            const personalizeBtn = document.getElementById('personalize-btn');
+            if(personalizeBtn) personalizeBtn.style.display = 'none';
+        });
+    } else {
+        // Fallback if button missing
+        countdownMusic.play().catch(e => console.log("Countdown audio prevented by browser", e));
+        startCountdown();
+    }
 };
 
 function startCountdown() {
@@ -571,3 +591,100 @@ function finalSurprise() {
         }, 10);
     }
 }
+
+// ----------------------------------------------------
+// PUBLIC USE: Personalize Feature Logic
+// ----------------------------------------------------
+document.addEventListener('DOMContentLoaded', () => {
+    const personalizeBtn = document.getElementById('personalize-btn');
+    const personalizeModal = document.getElementById('personalize-modal');
+    const saveBtn = document.getElementById('p-save-btn');
+    const closeBtn = document.getElementById('p-close-btn');
+
+    if(personalizeBtn) {
+        personalizeBtn.addEventListener('click', () => {
+            personalizeModal.classList.remove('hidden');
+            setTimeout(() => personalizeModal.classList.add('active'), 10);
+        });
+    }
+    
+    if(closeBtn) {
+        closeBtn.addEventListener('click', () => {
+            personalizeModal.classList.remove('active');
+            setTimeout(() => personalizeModal.classList.add('hidden'), 500);
+        });
+    }
+
+    if(saveBtn) {
+        saveBtn.addEventListener('click', () => {
+            // 1. Update Name
+            const name = document.getElementById('p-name').value || 'Special Person';
+            document.title = `Happy Birthday ${name}!`;
+            
+            // Safely replace text without destroying HTML
+            const updateTextElements = [
+                document.querySelector('.card h2.script-font'),
+                document.querySelector('.letter-text'),
+                document.querySelector('#intro-message'),
+                document.querySelector('#sc-2 h2')
+            ];
+            
+            updateTextElements.forEach(el => {
+                if(el && el.innerHTML) {
+                    el.innerHTML = el.innerHTML.replace(/MonAkka/g, name);
+                }
+            });
+
+            // 2. Update Main Image
+            const mainImgInput = document.getElementById('p-main-img');
+            if(mainImgInput.files && mainImgInput.files[0]) {
+                const url = URL.createObjectURL(mainImgInput.files[0]);
+                document.querySelector('.portrait-img').src = url;
+            }
+
+            // 3. Update Memories Gallery
+            const memoriesInput = document.getElementById('p-memories');
+            if(memoriesInput.files && memoriesInput.files.length > 0) {
+                const gallery = document.querySelector('.polaroid-gallery');
+                gallery.innerHTML = ''; // Clear existing
+                
+                Array.from(memoriesInput.files).forEach(file => {
+                    const url = URL.createObjectURL(file);
+                    const polaroid = document.createElement('div');
+                    polaroid.className = 'polaroid';
+                    
+                    if(file.type.startsWith('video/')) {
+                        polaroid.innerHTML = `<video src="${url}" autoplay loop muted playsinline></video>`;
+                    } else {
+                        polaroid.innerHTML = `<img src="${url}" alt="Memory">`;
+                    }
+                    gallery.appendChild(polaroid);
+                });
+            }
+            
+            // 4. Update Music
+            const musicId = document.getElementById('p-music').value;
+            if(musicId && ytPlayer && ytPlayer.loadVideoById) {
+                try {
+                    ytPlayer.loadVideoById({
+                        videoId: musicId,
+                        startSeconds: 0
+                    });
+                    setTimeout(() => ytPlayer.mute(), 500); // keep it muted until started
+                } catch(e) { console.log(e); }
+            }
+
+            // Hide Modal
+            personalizeModal.classList.remove('active');
+            setTimeout(() => personalizeModal.classList.add('hidden'), 500);
+            
+            // Visual feedback
+            personalizeBtn.innerHTML = '✅ Saved!';
+            personalizeBtn.style.background = 'rgba(16, 185, 129, 0.8)';
+            setTimeout(() => {
+                personalizeBtn.innerHTML = '<span style="font-size: 1.2rem;">⚙️</span> Edit Again';
+                personalizeBtn.style.background = 'rgba(0,0,0,0.5)';
+            }, 2000);
+        });
+    }
+});

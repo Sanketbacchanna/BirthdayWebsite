@@ -47,8 +47,13 @@
         <div id="intro-screen" class="screen active">
             <div id="countdown-container"
                 style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh;">
+                <!-- Start Button (Added for Public Use so they can customize before starting) -->
+                <button id="start-surprise-btn" class="memory-btn" style="font-size: 1.5rem; padding: 15px 40px; margin-bottom: 20px; z-index: 20; position: relative;">
+                    Start Surprise ✨
+                </button>
+
                 <h1 class="glow-text" id="countdown-text"
-                    style="font-size: 8rem; transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);">3</h1>
+                    style="font-size: 8rem; display: none; transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);">3</h1>
                 <p class="bounce-text" id="intro-message"
                     style="opacity: 0; font-size: 2.5rem; color: #fbbf24; font-family: 'Great Vibes', cursive; letter-spacing: 2px; margin-top: 0; text-shadow: 0 0 15px rgba(251, 191, 36, 0.5); transition: opacity 0.5s ease;">
                     ✨ A Special Surprise Awaits For Special Person✨</p>
@@ -296,6 +301,51 @@
                         My Heart
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Personalize Setup Button (Public Use Feature) -->
+    <div id="personalize-btn" style="position: fixed; bottom: 20px; right: 20px; background: rgba(0,0,0,0.5); color: white; padding: 10px 15px; border-radius: 20px; cursor: pointer; z-index: 1000; font-family: 'Outfit', sans-serif; backdrop-filter: blur(5px); border: 1px solid rgba(255,255,255,0.2); transition: all 0.3s ease;">
+        <span style="font-size: 1.2rem;">⚙️</span> Personalize
+    </div>
+
+    <!-- Personalize Modal -->
+    <div id="personalize-modal" class="modal hidden">
+        <div class="modal-content" style="max-width: 600px; padding: 30px; background: var(--modal-bg); border-radius: 20px; border: 1px solid var(--gold); max-height: 90vh; overflow-y: auto;">
+            <h2 class="script-font text-center mb-1" style="font-size: 3.5rem; color: var(--gold);">Personalize Surprise</h2>
+            <p class="text-light text-center mb-4">Make it yours! Customize the images and name. <br> Changes apply immediately for this session.</p>
+
+            <div style="display: flex; flex-direction: column; gap: 20px; text-align: left;">
+                <div>
+                    <label style="color: var(--accent); font-weight: bold; margin-bottom: 5px; display: block;">Birthday Person's Name</label>
+                    <input type="text" id="p-name" placeholder="e.g. MonAkka" value="MonAkka" style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.5); color: white; font-family: 'Outfit', sans-serif; font-size: 1.1rem; outline: none;">
+                </div>
+
+                <div>
+                    <label style="color: var(--accent); font-weight: bold; margin-bottom: 5px; display: block;">Main Portrait Image</label>
+                    <input type="file" id="p-main-img" accept="image/*" style="color: white; width: 100%; padding: 10px; background: rgba(255,255,255,0.05); border-radius: 8px;">
+                    <p style="font-size: 0.85rem; color: #94a3b8; margin-top: 5px;">This is the large circle image on the main celebration screen.</p>
+                </div>
+
+                <div>
+                    <label style="color: var(--accent); font-weight: bold; margin-bottom: 5px; display: block;">Memory Gallery (Images & Videos)</label>
+                    <input type="file" id="p-memories" accept="image/*,video/*" multiple style="color: white; width: 100%; padding: 10px; background: rgba(255,255,255,0.05); border-radius: 8px;">
+                    <p style="font-size: 0.85rem; color: #94a3b8; margin-top: 5px;">Select multiple files (images or mp4) for the polaroid gallery.</p>
+                </div>
+                
+                <div>
+                    <label style="color: var(--accent); font-weight: bold; margin-bottom: 5px; display: block;">YouTube Music ID (Optional)</label>
+                    <input type="text" id="p-music" placeholder="e.g. HTFXx1uvE7E" value="HTFXx1uvE7E" style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.5); color: white; font-family: 'Outfit', sans-serif; font-size: 1.1rem; outline: none;">
+                    <p style="font-size: 0.85rem; color: #94a3b8; margin-top: 5px;">The 11-character code from a YouTube link (e.g., watch?v=<b>HTFXx1uvE7E</b>).</p>
+                </div>
+
+                <button id="p-save-btn" class="memory-btn" style="width: 100%; margin-top: 15px; padding: 15px; font-size: 1.2rem;">
+                    Apply Changes
+                </button>
+                <button id="p-close-btn" style="background: none; border: none; color: #94a3b8; font-family: 'Outfit', sans-serif; cursor: pointer; padding: 10px; text-decoration: underline;">
+                    Cancel
+                </button>
             </div>
         </div>
     </div>
