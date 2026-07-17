@@ -69,6 +69,8 @@ window.onload = () => {
         countdownMusic.play().catch(e => console.log("Countdown audio prevented by browser", e));
         startCountdown();
     }
+    
+    initAdvancedFeatures();
 };
 
 function startCountdown() {
@@ -688,3 +690,82 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
+// ----------------------------------------------------
+// ADVANCED LEVEL UPDATES: Interactivity & Effects
+// ----------------------------------------------------
+function initAdvancedFeatures() {
+    initSparkleCursor();
+    initSpotlightHover();
+    createMusicVisualizer();
+}
+
+function initSparkleCursor() {
+    const createSparkle = (x, y) => {
+        const sparkle = document.createElement('div');
+        sparkle.className = 'cursor-sparkle';
+        sparkle.style.left = `${x}px`;
+        sparkle.style.top = `${y}px`;
+        
+        // Randomize colors
+        const colors = ['#c084fc', '#f472b6', '#fbbf24', '#fff'];
+        sparkle.style.background = colors[Math.floor(Math.random() * colors.length)];
+        
+        document.body.appendChild(sparkle);
+        
+        setTimeout(() => {
+            sparkle.remove();
+        }, 800);
+    };
+
+    let lastMove = 0;
+    document.addEventListener('mousemove', (e) => {
+        const now = Date.now();
+        if (now - lastMove > 30) { // Throttle sparkle creation
+            if (Math.random() > 0.3) {
+                createSparkle(e.clientX, e.clientY);
+            }
+            lastMove = now;
+        }
+    });
+}
+
+function initSpotlightHover() {
+    document.addEventListener('mousemove', (e) => {
+        document.querySelectorAll('.memory-btn, .card, .polaroid, .flip-card-front, .modal-content').forEach(el => {
+            const rect = el.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            el.style.setProperty('--mouse-x', `${x}px`);
+            el.style.setProperty('--mouse-y', `${y}px`);
+        });
+    });
+}
+
+function createMusicVisualizer() {
+    const visualizer = document.createElement('div');
+    visualizer.id = 'music-visualizer';
+    
+    for(let i=0; i<5; i++) {
+        const bar = document.createElement('div');
+        bar.className = 'bar';
+        visualizer.appendChild(bar);
+    }
+    
+    document.body.appendChild(visualizer);
+    
+    // Animate bars randomly to simulate music playing
+    setInterval(() => {
+        const isPlaying = (typeof ytPlayer !== 'undefined' && ytPlayer.getPlayerState && ytPlayer.getPlayerState() === 1) || 
+                          (document.getElementById('bg-music') && !document.getElementById('bg-music').paused);
+        
+        visualizer.style.opacity = isPlaying ? '1' : '0.3';
+        
+        const bars = visualizer.querySelectorAll('.bar');
+        bars.forEach(bar => {
+            const height = isPlaying ? Math.random() * 25 + 5 : 5;
+            bar.style.height = `${height}px`;
+        });
+    }, 150);
+}
+
