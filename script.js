@@ -107,7 +107,16 @@ function startCountdown() {
     }, 1000);
 }
 
+window.isEditMode = false;
+window.preventClickInEditMode = function(e) {
+    if(window.isEditMode) {
+        e.stopPropagation();
+        e.preventDefault();
+    }
+};
+
 function openGift() {
+    if(window.isEditMode) return;
     const giftScreen = document.getElementById('gift-screen');
     const celebrationScreen = document.getElementById('celebration-screen');
     const bgMusic = document.getElementById('bg-music');
@@ -138,6 +147,7 @@ function openGift() {
 }
 
 function nextCard(currentId) {
+    if(window.isEditMode) return;
     const current = document.getElementById(`sc-${currentId}`);
     const next = document.getElementById(`sc-${currentId + 1}`);
 
@@ -157,6 +167,7 @@ function nextCard(currentId) {
 }
 
 function showCelebration() {
+    if(window.isEditMode) return;
     const surpriseScreen = document.getElementById('surprise-cards-screen');
     const celebrationScreen = document.getElementById('celebration-screen');
 
@@ -350,6 +361,7 @@ function createBalloons() {
 }
 
 function toggleMemories() {
+    if(window.isEditMode) return;
     const modal = document.getElementById('memory-modal');
     if (modal.classList.contains('active')) {
         modal.classList.remove('active');
@@ -374,6 +386,7 @@ const reasons = [
 let cardsRendered = false;
 
 function toggleReasons() {
+    if(window.isEditMode) return;
     const modal = document.getElementById('reasons-modal');
     if (modal.classList.contains('active')) {
         modal.classList.remove('active');
@@ -404,12 +417,13 @@ function renderFlipCards() {
                     <span>#${index + 1}</span>
                 </div>
                 <div class="flip-card-back">
-                    <span>${reason}</span>
+                    <span class="reason-text">${reason}</span>
                 </div>
             </div>
         `;
         
         card.addEventListener('click', () => {
+            if (window.isEditMode) return;
             card.classList.toggle('flipped');
             // Small confetti on flip
             if(card.classList.contains('flipped')) {
@@ -428,6 +442,18 @@ function renderFlipCards() {
         
         container.appendChild(card);
     });
+
+    if (window.isEditMode) {
+        const newlyAddedTexts = container.querySelectorAll('span');
+        newlyAddedTexts.forEach(el => {
+            el.contentEditable = 'true';
+            el.style.border = '1px dashed rgba(255,255,255,0.5)';
+            el.style.padding = '2px';
+            el.style.borderRadius = '4px';
+            el.style.cursor = 'text';
+            el.addEventListener('click', window.preventClickInEditMode);
+        });
+    }
 }
 
 // Virtual Cake Feature
@@ -435,6 +461,7 @@ let candlesBlown = false;
 let cakeCut = false;
 
 function toggleCake() {
+    if(window.isEditMode) return;
     const modal = document.getElementById('cake-modal');
     if (modal.classList.contains('active')) {
         modal.classList.remove('active');
@@ -459,6 +486,7 @@ function toggleCake() {
 }
 
 function interactCake() {
+    if(window.isEditMode) return;
     if (!candlesBlown) {
         blowCandles();
     } else if (!cakeCut) {
@@ -565,6 +593,7 @@ function cutCake() {
 
 // Letter Feature
 function openLetter() {
+    if(window.isEditMode) return;
     const modal = document.getElementById('letter-modal');
     if (modal.classList.contains('active')) {
         modal.classList.remove('active');
@@ -577,6 +606,7 @@ function openLetter() {
 
 // Final Surprise Feature
 function finalSurprise() {
+    if(window.isEditMode) return;
     const modal = document.getElementById('final-modal');
     if (modal.classList.contains('active')) {
         modal.classList.remove('active');
@@ -600,6 +630,87 @@ document.addEventListener('DOMContentLoaded', () => {
     const personalizeModal = document.getElementById('personalize-modal');
     const saveBtn = document.getElementById('p-save-btn');
     const closeBtn = document.getElementById('p-close-btn');
+
+    const editModeBtn = document.getElementById('edit-mode-btn');
+    if(editModeBtn) {
+        editModeBtn.addEventListener('click', () => {
+            window.isEditMode = !window.isEditMode;
+            // Select all typical text elements inside the container that should be editable
+            const textElements = document.querySelectorAll('#container h1, #container h2, #container h3, #container p, #container span');
+            
+            if(window.isEditMode) {
+                editModeBtn.innerHTML = '<span style="font-size: 1.2rem;">✅</span> Finish Editing';
+                editModeBtn.style.background = 'rgba(16, 185, 129, 0.8)';
+                
+                textElements.forEach(el => {
+                    // Filter out emojis and specific structural spans if needed, but simple editable is fine
+                    if (el.id !== 'countdown-text' && !el.closest('.button-grid') && !el.closest('.polaroid-gallery')) {
+                        el.contentEditable = 'true';
+                        el.style.border = '1px dashed rgba(255,255,255,0.5)';
+                        el.style.padding = '2px';
+                        el.style.borderRadius = '4px';
+                        el.style.cursor = 'text';
+                        
+                        // Prevent click from bubbling up to parent containers
+                        el.addEventListener('click', window.preventClickInEditMode);
+                    }
+                });
+            } else {
+                editModeBtn.innerHTML = '<span style="font-size: 1.2rem;">✏️</span> Edit Text';
+                editModeBtn.style.background = 'rgba(0,0,0,0.5)';
+                
+                textElements.forEach(el => {
+                    if (el.contentEditable === 'true') {
+                        el.contentEditable = 'false';
+                        el.style.border = 'none';
+                        el.style.padding = '0';
+                        el.style.cursor = '';
+                        el.removeEventListener('click', window.preventClickInEditMode);
+                    }
+                });
+            }
+        });
+    }
+
+    const galleryUpload = document.getElementById('gallery-upload');
+    if(galleryUpload) {
+        galleryUpload.addEventListener('change', (e) => {
+            if(e.target.files && e.target.files.length > 0) {
+                const gallery = document.querySelector('.polaroid-gallery');
+                Array.from(e.target.files).forEach(file => {
+                    const url = URL.createObjectURL(file);
+                    const polaroid = document.createElement('div');
+                    polaroid.className = 'polaroid';
+                    
+                    if(file.type.startsWith('video/')) {
+                        polaroid.innerHTML = `<video src="${url}" autoplay loop muted playsinline></video>`;
+                    } else {
+                        polaroid.innerHTML = `<img src="${url}" alt="Memory">`;
+                    }
+                    gallery.insertBefore(polaroid, galleryUpload.parentElement);
+                });
+            }
+        });
+    }
+
+    const portraitUpload = document.getElementById('portrait-upload');
+    if(portraitUpload) {
+        portraitUpload.addEventListener('change', (e) => {
+            if(e.target.files && e.target.files[0]) {
+                const url = URL.createObjectURL(e.target.files[0]);
+                const img = document.querySelector('.portrait-img');
+                img.src = url;
+                img.style.display = 'block';
+                
+                const label = document.querySelector('label[for="portrait-upload"]');
+                if (label) {
+                    label.style.background = 'transparent';
+                    const span = label.querySelector('span');
+                    if (span) span.style.opacity = '0';
+                }
+            }
+        });
+    }
 
     if(personalizeBtn) {
         personalizeBtn.addEventListener('click', () => {
@@ -639,14 +750,26 @@ document.addEventListener('DOMContentLoaded', () => {
             const mainImgInput = document.getElementById('p-main-img');
             if(mainImgInput.files && mainImgInput.files[0]) {
                 const url = URL.createObjectURL(mainImgInput.files[0]);
-                document.querySelector('.portrait-img').src = url;
+                const img = document.querySelector('.portrait-img');
+                if (img) {
+                    img.src = url;
+                    img.style.display = 'block';
+                }
+                const label = document.querySelector('label[for="portrait-upload"]');
+                if (label) {
+                    label.style.background = 'transparent';
+                    const span = label.querySelector('span');
+                    if (span) span.style.opacity = '0';
+                }
             }
 
-            // 3. Update Memories Gallery
             const memoriesInput = document.getElementById('p-memories');
             if(memoriesInput.files && memoriesInput.files.length > 0) {
                 const gallery = document.querySelector('.polaroid-gallery');
-                gallery.innerHTML = ''; // Clear existing
+                const polaroids = gallery.querySelectorAll('.polaroid:not(.add-memory-btn)');
+                polaroids.forEach(p => p.remove()); // Clear existing images but keep add button
+                
+                const galleryUploadBtn = document.getElementById('gallery-upload');
                 
                 Array.from(memoriesInput.files).forEach(file => {
                     const url = URL.createObjectURL(file);
@@ -658,7 +781,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     } else {
                         polaroid.innerHTML = `<img src="${url}" alt="Memory">`;
                     }
-                    gallery.appendChild(polaroid);
+                    if (galleryUploadBtn && galleryUploadBtn.parentElement) {
+                        gallery.insertBefore(polaroid, galleryUploadBtn.parentElement);
+                    } else {
+                        gallery.appendChild(polaroid);
+                    }
                 });
             }
             

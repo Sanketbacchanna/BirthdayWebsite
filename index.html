@@ -141,7 +141,13 @@
 
                     <div class="portrait-container">
                         <div class="portrait-ring"></div>
-                        <img src="assets/MM.jpg" alt="MonAkka" class="portrait-img">
+                        <label for="portrait-upload"
+                            style="cursor: pointer; position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.1); border: 6px solid #0a0a0f;">
+                            <span
+                                style="font-size: 5rem; color: rgba(255,255,255,0.8); font-weight: 300; transition: opacity 0.3s;">+</span>
+                        </label>
+                        <input type="file" id="portrait-upload" accept="image/*" style="display: none;">
+                        <img src="" alt="Birthday Person" class="portrait-img" style="display: none;">
                     </div>
 
                     <p class="message">Wishing you a day as incredibly wonderful as you are! May your year ahead be
@@ -199,29 +205,12 @@
                 <p class="text-center text-light mb-4">Tap on a photo to take a closer look</p>
 
                 <div class="polaroid-gallery">
-                    <!-- Videos -->
-                    <div class="polaroid"><video src="assets/monika__m19_b9160d2dcd7d4d47a51204a1be5db391.mp4" autoplay
-                            loop muted playsinline></video></div>
-                    <div class="polaroid"><video src="assets/Snapchat-527843204.mp4" autoplay loop muted
-                            playsinline></video></div>
-                    <div class="polaroid"><video src="assets/Snapchat-1835184224.mp4" autoplay loop muted
-                            playsinline></video></div>
-                    <!-- Images -->
-                    <div class="polaroid"><img src="assets/MM.jpg" alt="Memory"></div>
-                    <div class="polaroid"><img src="assets/IMG-20250528-WA0021.jpg" alt="Memory"></div>
-                    <div class="polaroid"><img src="assets/IMG-20250601-WA0010.png" alt="Memory"></div>
-                    <div class="polaroid"><img src="assets/IMG-20250601-WA0021.jpg" alt="Memory"></div>
-                    <div class="polaroid"><img src="assets/IMG-20250614-WA0033.jpg" alt="Memory"></div>
-                    <div class="polaroid"><img src="assets/IMG-20260427-WA0022.jpg" alt="Memory"></div>
-                    <div class="polaroid"><img src="assets/IMG-20260427-WA0023.jpg" alt="Memory"></div>
-                    <div class="polaroid"><img src="assets/IMG-20260427-WA0030.jpg" alt="Memory"></div>
-                    <div class="polaroid"><img src="assets/IMG-20260427-WA0032.jpg" alt="Memory"></div>
-                    <div class="polaroid"><img src="assets/Screenshot_2024-06-10-00-04-56-015-edit_com.whatsapp.jpg"
-                            alt="Memory"></div>
-                    <div class="polaroid"><img src="assets/Snapchat-1628616165.jpg" alt="Memory"></div>
-                    <div class="polaroid"><img src="assets/Snapchat-1988507172.jpg" alt="Memory"></div>
-                    <div class="polaroid"><img src="assets/Snapchat-725268181.jpg" alt="Memory"></div>
-                    <div class="polaroid"><img src="assets/Snapchat-780156977.jpg" alt="Memory"></div>
+                    <!-- Add Memory Button -->
+                    <label class="polaroid add-memory-btn" for="gallery-upload"
+                        style="display: flex; justify-content: center; align-items: center; cursor: pointer; background: rgba(255,255,255,0.1); border: 2px dashed rgba(255,255,255,0.5); min-height: 250px;">
+                        <span style="font-size: 4rem; color: white;">+</span>
+                        <input type="file" id="gallery-upload" accept="image/*,video/*" multiple style="display: none;">
+                    </label>
                 </div>
             </div>
         </div>
@@ -266,7 +255,7 @@
                 style="display: flex; justify-content: center; align-items: center; padding: 20px;">
                 <div class="letter-paper">
                     <p class="script-font letter-text">
-                        Dear MonAkka,<br><br>
+                        Dear,<br><br>
                         Thank you for always being there for me... You are my biggest supporter and my best
                         friend.<br><br>
                         Wishing you the most wonderful day. May all your dreams come true!<br><br>
@@ -305,6 +294,12 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <!-- Edit Text Button (Public Use Feature) -->
+    <div id="edit-mode-btn"
+        style="position: fixed; bottom: 20px; right: 160px; background: rgba(0,0,0,0.5); color: white; padding: 10px 15px; border-radius: 20px; cursor: pointer; z-index: 1000; font-family: 'Outfit', sans-serif; backdrop-filter: blur(5px); border: 1px solid rgba(255,255,255,0.2); transition: all 0.3s ease;">
+        <span style="font-size: 1.2rem;">✏️</span> Edit Text
     </div>
 
     <!-- Personalize Setup Button (Public Use Feature) -->
