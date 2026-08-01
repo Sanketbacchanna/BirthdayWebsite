@@ -24,4 +24,4 @@ Simply double-click the `index.html` file to open it in your browser, or if you 
 - Vanilla JavaScript (DOM manipulation, Canvas API)
 
 ---
-*Created with love for MonAkka!* ❤️
+*Created with love for My Sisters!* ❤️
